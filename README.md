@@ -2,11 +2,11 @@
 
 > **A clean, complete, and zero-dependency React Native package for Android UPI payments using Native Intent (`startActivityForResult`).**
 > 
-> কোনো অতিরিক্ত থার্ড-পার্টি SDK বা এক্সটার্নাল ডিপেন্ডেন্সি ছাড়া সরাসরি Android-এর Native Java Module এবং `ActivityEventListener` ব্যবহার করে React Native অ্যাপে UPI পেমেন্ট ইমপ্লিমেন্ট করার সম্পূর্ণ ও আধুনিক সল্যুশন।
+> A complete and modern solution for implementing UPI payments in React Native using Android Native Modules and `ActivityEventListener` without any external third-party SDK dependencies.
 
 ---
 
-## 🌟 Features (সুবিধাসমূহ)
+## 🌟 Features
 
 - ⚡ **100% Native Intent Implementation:** Uses native `startActivityForResult` with `ActivityEventListener` to listen for real-time payment results.
 - 🛡️ **Zero External SDKs:** No third-party payment gateway SDK required—full control in your hands.
@@ -19,53 +19,53 @@
 
 ---
 
-## 📥 Installation (ইনস্টলেশন)
+## 📥 Installation
 
 ```bash
-# npm ব্যবহার করলে:
+# Using npm:
 npm install @tahir810/react-native-upi
 
-# yarn ব্যবহার করলে:
+# Using yarn:
 yarn add @tahir810/react-native-upi
 ```
 
 ---
 
-## ⚙️ Android Configuration (কনফিগারেশন)
+## ⚙️ Android Configuration
 
-### 1. Autolinking (স্বয়ংক্রিয় লিংকিং)
-React Native 0.60 বা তার পরবর্তী সংস্করণে প্যাকেজটি **স্বয়ংক্রিয়ভাবে লিঙ্ক হয়ে যায়**। কোনো অতিরিক্ত ফাইল এডিট করার প্রয়োজন নেই!
+### 1. Autolinking
+On React Native 0.60 and above, this package is **automatically linked**. No manual configuration is required!
 
-### 2. Manual Linking (প্রয়োজন হলে)
-আপনার প্রজেক্ট যদি অনেক পুরোনো হয় অথবা ম্যানুয়াল লিংকিং দরকার হয়:
+### 2. Manual Linking (If needed)
+For older React Native versions or custom project setups where autolinking is disabled:
 
-১. `android/settings.gradle` ফাইলে যুক্ত করুন:
+1. Add to `android/settings.gradle`:
 ```groovy
 include ':@tahir810_react-native-upi'
 project(':@tahir810_react-native-upi').projectDir = new File(rootProject.projectDir, '../node_modules/@tahir810/react-native-upi/android')
 ```
 
-২. `android/app/build.gradle` ফাইলে dependencies-এ যুক্ত করুন:
+2. Add to dependencies in `android/app/build.gradle`:
 ```groovy
 dependencies {
     implementation project(':@tahir810_react-native-upi')
 }
 ```
 
-৩. `MainApplication.java` (বা `MainApplication.kt`)-এ যুক্ত করুন:
+3. Add to `MainApplication.java` (or `MainApplication.kt`):
 ```java
 import com.reactnativeupi.UPIPaymentPackage;
 
-// getPackages() মেথডের ভেতরে:
+// Inside getPackages() method:
 packages.add(new UPIPaymentPackage());
 ```
 
 ---
 
-## 🚀 Usage (ব্যবহার বিধি)
+## 🚀 Usage
 
-### ১. সহজ ব্যবহার (Direct 5 Arguments - User Prompt Match)
-আপনার দেওয়া কোডের অনুরূপ সরাসরি ৫টি আর্গুমেন্ট দিয়ে কল করতে পারেন:
+### 1. Simple Usage (Direct 5 Arguments)
+You can directly invoke the payment method with standard parameters:
 
 ```typescript
 import React from 'react';
@@ -75,12 +75,12 @@ import { startPayment } from '@tahir810/react-native-upi';
 export default function PaymentScreen() {
   const makePayment = async () => {
     if (Platform.OS !== 'android') {
-      Alert.alert('ত্রুটি', 'এই ফিচারটি শুধুমাত্র Android ডিভাইসের জন্য প্রযোজ্য।');
+      Alert.alert('Error', 'UPI payments are only supported on Android devices.');
       return;
     }
 
     try {
-      // 5-argument method (ডিফল্টভাবে Google Pay ওপেন করবে)
+      // 5-argument method (defaults to Google Pay)
       const rawResponse = await startPayment(
         'your-merchant-vpa@okhdfcbank', // pa: Merchant UPI VPA
         'Merchant Name',                 // pn: Payee Name
@@ -108,8 +108,8 @@ export default function PaymentScreen() {
 
 ---
 
-### ২. আধুনিক স্ট্রাকচার্ড মেথড (`initiatePayment`)
-স্ট্রাকচার্ড অবজেক্ট পাস করে Google Pay, PhonePe, Paytm বা সিস্টেম Chooser ব্যবহার করুন এবং পার্স করা রেসপন্স অবজেক্ট পান:
+### 2. Modern Structured API (`initiatePayment`)
+Pass a structured configuration object to pay via Google Pay, PhonePe, Paytm, or the system Chooser dialog, and receive a parsed response object:
 
 ```typescript
 import { initiatePayment, isPaymentSuccessful, UPI_APPS } from '@tahir810/react-native-upi';
@@ -122,8 +122,8 @@ const handlePayment = async () => {
       amount: '250.00',
       txnRef: 'TXN_' + Date.now(),
       note: 'Grocery Order',
-      // নির্দিষ্ট অ্যাপ টার্গেট করতে পারেন অথবা CHOOSER ব্যবহার করতে পারেন:
-      packageName: UPI_APPS.PHONEPE, // অথবা UPI_APPS.GOOGLE_PAY / UPI_APPS.PAYTM / UPI_APPS.CHOOSER
+      // Target specific app or use CHOOSER:
+      packageName: UPI_APPS.PHONEPE, // or UPI_APPS.GOOGLE_PAY / UPI_APPS.PAYTM / UPI_APPS.CHOOSER
     });
 
     console.log('Status:', result.status);             // 'SUCCESS' | 'FAILURE' | 'SUBMITTED'
@@ -132,20 +132,20 @@ const handlePayment = async () => {
     console.log('Raw Response:', result.rawResponse);
 
     if (isPaymentSuccessful(result)) {
-      alert(`পেমেন্ট সফল হয়েছে! ট্রানজ্যাকশন আইডি: ${result.txnId}`);
+      alert(`Payment Successful! Transaction ID: ${result.txnId}`);
     } else {
-      alert(`পেমেন্ট স্ট্যাটাস: ${result.status}`);
+      alert(`Payment Status: ${result.status}`);
     }
   } catch (error: any) {
-    alert(`পেমেন্ট বাতিল বা ব্যর্থ: ${error.message}`);
+    alert(`Payment Cancelled or Failed: ${error.message}`);
   }
 };
 ```
 
 ---
 
-### ৩. ইনস্টল থাকা UPI অ্যাপস চেক করা (`getInstalledUPIApps`)
-ব্যবহারকারীর ফোনে কোন কোন UPI অ্যাপ ইনস্টল করা আছে তা চেক করে ডায়নামিক লিস্ট তৈরি করতে পারেন:
+### 3. Query Installed UPI Apps (`getInstalledUPIApps`)
+Discover all installed UPI apps on the device to render a dynamic payment app selector:
 
 ```typescript
 import React, { useEffect, useState } from 'react';
@@ -172,7 +172,7 @@ export function UPIAppSelector() {
 
   return (
     <View>
-      <Text>পেমেন্টের জন্য অ্যাপ নির্বাচন করুন:</Text>
+      <Text>Select an app to pay:</Text>
       {apps.map((app) => (
         <TouchableOpacity key={app.packageName} onPress={() => payWithApp(app.packageName)}>
           <Text>{app.name}</Text>
@@ -185,7 +185,7 @@ export function UPIAppSelector() {
 
 ---
 
-## 📖 API Reference (এপিআই রেফারেন্স)
+## 📖 API Reference
 
 ### Method Signatures
 
@@ -235,6 +235,8 @@ Helper function returning `true` if the payment status is `'SUCCESS'`.
 | `packageName` | `string` | No | Specific package name or `'CHOOSER'`. Default: Chooser or GPay |
 | `merchantCode` | `string` | No | Merchant Category Code (MCC) |
 | `url` | `string` | No | Transaction reference URL |
+| `mode` | `string` | No | Transaction Mode (e.g. `'00'` for default, `'02'` for QR) |
+| `orgid` | `string` | No | Bank or Partner Org ID for verified routing |
 
 ---
 
@@ -279,13 +281,13 @@ UPI_ERROR_CODES.INVALID_PARAMS           // 'INVALID_PARAMS'
 
 ---
 
-## 🔍 How It Works Under The Hood (অভ্যন্তরীণ কার্যপদ্ধতি)
+## 🔍 How It Works Under The Hood
 
-১. **Native Intent Creation:** React Native থেকে কল করার পর Java মডিউলে `upi://pay` স্কিমের মাধ্যমে একটি স্ট্যান্ডার্ড Android Intent তৈরি করা হয়।  
-২. **Activity Request:** Android-এর `currentActivity.startActivityForResult(intent, 123)` কল করে টার্গেট UPI অ্যাপ (Google Pay, PhonePe ইত্যাদি) চালু করা হয়।  
-৩. **Result Listener:** React Native-এর `ActivityEventListener` ইন্টারফেসের `onActivityResult` মেথড স্বয়ংক্রিয়ভাবে ব্যবহারকারীর পেমেন্টের রেজাল্ট ট্র্যাক করে।  
-৪. **Promise Resolution:** ব্যবহারকারী পেমেন্ট শেষ করলে বা বাতিল করলে `Promise`-এর মাধ্যমে JavaScript-এ সরাসরি Raw String ডাটা চলে আসে।  
-৫. **Automatic Fallback:** যেসকল UPI অ্যাপ `data.getStringExtra("response")`-এ ডাটা রিটার্ন করে না, সেগুলোর ক্ষেত্রে স্বয়ংক্রিয়ভাবে `Bundle extras` ও `dataString` থেকে তথ্য এক্সট্রাক্ট করা হয়।
+1. **Native Intent Creation:** A standard Android Intent is constructed using the `upi://pay` URI scheme with NPCI-compliant payment parameters.
+2. **Activity Request:** Android's `currentActivity.startActivityForResult(intent, 123)` is called to launch the chosen UPI app (Google Pay, PhonePe, etc.) or system chooser dialog.
+3. **Result Listener:** React Native's `ActivityEventListener` listens to `onActivityResult` to capture the payment transaction result from the UPI app.
+4. **Promise Resolution:** The raw response string returned by the payment application is resolved or rejected back to the JavaScript Promise.
+5. **Automatic Fallback:** For UPI apps that do not pass data via `data.getStringExtra("response")`, parameters are safely extracted from Bundle extras and Intent data URI.
 
 ---
 
