@@ -9,3 +9,7 @@ jest.config.js
 tsconfig.json
 android/build/
 android/.gradle/
+android/.classpath
+android/.project
+android/.settings/
+
