@@ -7,3 +7,5 @@ android/.gradle/
 coverage/
 .idea/
 *.iml
+*.tgz
+
