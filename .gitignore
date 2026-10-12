@@ -1,0 +1,9 @@
+node_modules/
+lib/
+android/build/
+android/.gradle/
+*.log
+.DS_Store
+coverage/
+.idea/
+*.iml

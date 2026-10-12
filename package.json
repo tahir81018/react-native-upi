@@ -1,0 +1,49 @@
+{
+  "name": "react-native-upi",
+  "version": "1.0.0",
+  "description": "Clean, lightweight, and complete React Native module for UPI payments using native Android Intent (startActivityForResult). Supports Google Pay, PhonePe, Paytm, BHIM, Cred, and System Chooser.",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "react-native": "src/index.ts",
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "react-native.config.js",
+    "!android/build",
+    "!android/.gradle",
+    "!**/__tests__"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "react-native",
+    "upi",
+    "google-pay",
+    "phonepe",
+    "paytm",
+    "bhim",
+    "gpay",
+    "payment",
+    "android",
+    "intent",
+    "startActivityForResult"
+  ],
+  "author": "Tahir",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-native": ">=0.60.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.3"
+  }
+}

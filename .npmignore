@@ -1,0 +1,11 @@
+__tests__/
+__mocks__/
+example/
+.github/
+.vscode/
+.idea/
+*.log
+jest.config.js
+tsconfig.json
+android/build/
+android/.gradle/
