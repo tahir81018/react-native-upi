@@ -19,7 +19,9 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UPIPaymentModule extends ReactContextBaseJavaModule {
 
@@ -59,7 +61,11 @@ public class UPIPaymentModule extends ReactContextBaseJavaModule {
 
                         // Fallback for UPI apps returning data in intent URI
                         if (responseData == null || responseData.trim().isEmpty()) {
-                            responseData = data.getDataString();
+                            String dataString = data.getDataString();
+                            if (dataString != null) {
+                                int qIdx = dataString.indexOf('?');
+                                responseData = (qIdx != -1) ? dataString.substring(qIdx + 1) : dataString;
+                            }
                         }
 
                         if (responseData != null && !responseData.trim().isEmpty()) {
@@ -86,12 +92,21 @@ public class UPIPaymentModule extends ReactContextBaseJavaModule {
         return MODULE_NAME;
     }
 
+    @Override
+    public void onCatalystInstanceDestroy() {
+        super.onCatalystInstanceDestroy();
+        try {
+            getReactApplicationContext().removeActivityEventListener(mActivityEventListener);
+        } catch (Exception ignored) {
+        }
+    }
+
     /**
      * Start payment with standard 5 parameters (defaults to Google Pay)
      */
     @ReactMethod
     public void startPayment(String vpa, String name, String amount, String txnRef, String note, Promise promise) {
-        startPaymentInternal(vpa, name, amount, "INR", txnRef, note, null, null, GOOGLE_PAY_PACKAGE_NAME, promise);
+        startPaymentInternal(vpa, name, amount, "INR", txnRef, note, null, null, null, null, GOOGLE_PAY_PACKAGE_NAME, promise);
     }
 
     /**
@@ -99,7 +114,7 @@ public class UPIPaymentModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void startPaymentWithApp(String vpa, String name, String amount, String txnRef, String note, String packageName, Promise promise) {
-        startPaymentInternal(vpa, name, amount, "INR", txnRef, note, null, null, packageName, promise);
+        startPaymentInternal(vpa, name, amount, "INR", txnRef, note, null, null, null, null, packageName, promise);
     }
 
     /**
@@ -115,6 +130,8 @@ public class UPIPaymentModule extends ReactContextBaseJavaModule {
         String note = options.hasKey("note") ? options.getString("note") : "";
         String merchantCode = options.hasKey("merchantCode") ? options.getString("merchantCode") : null;
         String url = options.hasKey("url") ? options.getString("url") : null;
+        String mode = options.hasKey("mode") ? options.getString("mode") : null;
+        String orgid = options.hasKey("orgid") ? options.getString("orgid") : null;
         String packageName = options.hasKey("packageName") ? options.getString("packageName") : null;
 
         if (vpa == null || vpa.trim().isEmpty()) {
@@ -137,7 +154,7 @@ public class UPIPaymentModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        startPaymentInternal(vpa, name, amount, currency, txnRef, note, merchantCode, url, packageName, promise);
+        startPaymentInternal(vpa, name, amount, currency, txnRef, note, merchantCode, url, mode, orgid, packageName, promise);
     }
 
     private void startPaymentInternal(
@@ -149,6 +166,8 @@ public class UPIPaymentModule extends ReactContextBaseJavaModule {
             String note,
             String merchantCode,
             String url,
+            String mode,
+            String orgid,
             String packageName,
             Promise promise
     ) {
@@ -189,6 +208,14 @@ public class UPIPaymentModule extends ReactContextBaseJavaModule {
                 uriBuilder.appendQueryParameter("url", url);
             }
 
+            if (mode != null && !mode.isEmpty()) {
+                uriBuilder.appendQueryParameter("mode", mode);
+            }
+
+            if (orgid != null && !orgid.isEmpty()) {
+                uriBuilder.appendQueryParameter("orgid", orgid);
+            }
+
             Uri uri = uriBuilder.build();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(uri);
@@ -214,7 +241,7 @@ public class UPIPaymentModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Get list of all installed UPI apps on the device
+     * Get list of all installed UPI apps on the device (deduplicated by package)
      */
     @ReactMethod
     public void getInstalledUPIApps(Promise promise) {
@@ -223,14 +250,21 @@ public class UPIPaymentModule extends ReactContextBaseJavaModule {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("upi://pay"));
 
-            List<ResolveInfo> resolveInfoList = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            List<ResolveInfo> resolveInfoList = pm.queryIntentActivities(intent, 0);
 
             WritableArray appList = Arguments.createArray();
+            Set<String> seenPackages = new HashSet<>();
+
             for (ResolveInfo info : resolveInfoList) {
-                WritableMap app = Arguments.createMap();
-                app.putString("packageName", info.activityInfo.packageName);
-                app.putString("name", info.loadLabel(pm).toString());
-                appList.pushMap(app);
+                if (info.activityInfo != null && info.activityInfo.packageName != null) {
+                    String pkg = info.activityInfo.packageName;
+                    if (seenPackages.add(pkg)) {
+                        WritableMap app = Arguments.createMap();
+                        app.putString("packageName", pkg);
+                        app.putString("name", info.loadLabel(pm).toString());
+                        appList.pushMap(app);
+                    }
+                }
             }
             promise.resolve(appList);
         } catch (Exception e) {

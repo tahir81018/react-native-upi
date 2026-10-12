@@ -95,6 +95,8 @@ export async function initiatePayment(
     currency: config.currency || 'INR',
     merchantCode: config.merchantCode,
     url: config.url,
+    mode: config.mode,
+    orgid: config.orgid,
     packageName: config.packageName,
   });
 
@@ -190,6 +192,9 @@ export async function isAppInstalled(
   return CustomUPIPayment.isAppInstalled(packageName);
 }
 
+export const UPIApps = UPI_APPS;
+export const UPIErrorCodes = UPI_ERROR_CODES;
+
 export { parseUPIResponse, isPaymentSuccessful };
 export { UPI_APPS, UPI_STATUS, UPI_ERROR_CODES };
 export * from './types';
@@ -203,7 +208,9 @@ export default {
   parseUPIResponse,
   isPaymentSuccessful,
   UPI_APPS,
+  UPIApps,
   UPI_STATUS,
   UPI_ERROR_CODES,
+  UPIErrorCodes,
   CustomUPIPayment,
 };

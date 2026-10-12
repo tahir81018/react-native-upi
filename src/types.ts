@@ -52,6 +52,16 @@ export interface UPIPaymentConfig {
    * Defaults to Google Pay or Chooser if unspecified.
    */
   packageName?: string;
+
+  /**
+   * Transaction Mode (e.g. '00' for default, '02' for static/dynamic QR).
+   */
+  mode?: string;
+
+  /**
+   * Bank or Partner Org ID for verified merchant routing.
+   */
+  orgid?: string;
 }
 
 export interface UPIPaymentResponse {

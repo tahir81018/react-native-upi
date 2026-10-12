@@ -39,6 +39,14 @@
   ],
   "author": "Tahir",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tahir810/react-native-upi.git"
+  },
+  "homepage": "https://github.com/tahir810/react-native-upi#readme",
+  "bugs": {
+    "url": "https://github.com/tahir810/react-native-upi/issues"
+  },
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-native": ">=0.60.0"

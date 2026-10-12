@@ -88,6 +88,8 @@ describe('@tahir810/react-native-upi index module', () => {
       currency: 'INR',
       merchantCode: undefined,
       url: undefined,
+      mode: undefined,
+      orgid: undefined,
       packageName: 'com.google.android.apps.nbu.paisa.user',
     });
     expect(response.status).toBe('SUCCESS');

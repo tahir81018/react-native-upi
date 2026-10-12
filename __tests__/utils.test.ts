@@ -53,6 +53,41 @@ describe('parseUPIResponse', () => {
     expect(result.note).toBe('Payment for order#123');
   });
 
+  it('handles upi://response URI format with query prefix', () => {
+    const raw = 'upi://response?Status=SUCCESS&txnId=URI_TXN123&ApprovalRefNo=APP888';
+    const result = parseUPIResponse(raw);
+
+    expect(result.status).toBe(UPI_STATUS.SUCCESS);
+    expect(result.txnId).toBe('URI_TXN123');
+    expect(result.approvalRefNo).toBe('APP888');
+  });
+
+  it('handles standalone SUCCESS and FAILURE strings', () => {
+    const resSuccess = parseUPIResponse('SUCCESS');
+    expect(resSuccess.status).toBe(UPI_STATUS.SUCCESS);
+
+    const resFail = parseUPIResponse('FAILURE');
+    expect(resFail.status).toBe(UPI_STATUS.FAILURE);
+  });
+
+  it('handles key aliases (transactionid, transactionref, apprno, rc)', () => {
+    const raw = 'Status=SUCCESS&transactionid=T1&transactionref=R1&apprno=A1&rc=0';
+    const result = parseUPIResponse(raw);
+
+    expect(result.txnId).toBe('T1');
+    expect(result.txnRef).toBe('R1');
+    expect(result.approvalRefNo).toBe('A1');
+    expect(result.responseCode).toBe('0');
+  });
+
+  it('safely handles malformed percent-encoding without throwing URIError', () => {
+    const raw = 'Status=SUCCESS&note=Discount%99InvalidPercent';
+    expect(() => parseUPIResponse(raw)).not.toThrow();
+    const result = parseUPIResponse(raw);
+    expect(result.status).toBe(UPI_STATUS.SUCCESS);
+    expect(result.note).toBe('Discount%99InvalidPercent');
+  });
+
   it('handles empty, null, or malformed strings gracefully', () => {
     const resultEmpty = parseUPIResponse('');
     expect(resultEmpty.status).toBe(UPI_STATUS.FAILURE);
@@ -79,6 +114,7 @@ describe('isPaymentSuccessful', () => {
 
   it('returns true for successful raw string', () => {
     expect(isPaymentSuccessful('Status=SUCCESS&txnId=123')).toBe(true);
+    expect(isPaymentSuccessful('SUCCESS')).toBe(true);
   });
 
   it('returns false for failure, cancelled, or pending status', () => {
