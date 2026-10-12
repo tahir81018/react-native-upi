@@ -1,11 +1,26 @@
 # Example App for @tahir810/react-native-upi
 
-This directory demonstrates how to use `@tahir810/react-native-upi` in a React Native application.
+This directory contains a complete, runnable test application featuring a **single test Pay button** to verify UPI native intent payments.
 
-### Key features shown in `App.tsx`:
-1. Direct 5-argument method (`startPayment(...)`) matching the user prompt.
-2. Structured payment with options (`initiatePayment(...)`) returning parsed status, transaction ID, and approval code.
-3. System Chooser dialog (`UPI_APPS.CHOOSER`) allowing the user to pick any UPI app on the device.
-4. Discovering installed UPI apps (`getInstalledUPIApps()`).
+## Features
+- **One-Click UPI Test:** Prominent "Pay with UPI" button that triggers Android's `startActivityForResult` via system chooser or Google Pay.
+- **Real-time Status Banner:** Displays transaction status, Txn ID, and Approval Reference Code.
+- **Configurable VPA:** Optional toggle to test with custom merchant VPA and amount.
 
-To test in your own React Native project, you can copy `App.tsx` directly into your project root.
+## How to Run with Expo
+
+1. **Install dependencies:**
+   ```bash
+   cd example
+   npm install
+   ```
+
+2. **Generate the Android native project:**
+   ```bash
+   npx expo prebuild --platform android
+   ```
+
+3. **Run on an Android device:**
+   ```bash
+   npx expo run:android
+   ```
