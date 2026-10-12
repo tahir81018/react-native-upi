@@ -12,4 +12,4 @@ android/.gradle/
 android/.classpath
 android/.project
 android/.settings/
-
+android/bin/
