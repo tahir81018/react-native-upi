@@ -11,5 +11,9 @@ coverage/
 example/android/
 example/ios/
 example/.expo/
+.classpath
+.project
+.settings/
+
 
 
