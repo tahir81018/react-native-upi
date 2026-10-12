@@ -9,7 +9,7 @@ import { parseUPIResponse, isPaymentSuccessful } from './utils';
 import { UPI_APPS, UPI_STATUS, UPI_ERROR_CODES } from './constants';
 
 const LINKING_ERROR =
-  `The package 'react-native-upi' doesn't seem to be linked. Make sure: \n\n` +
+  `The package '@tahir810/react-native-upi' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- UPI payment is only supported on Android.\n", default: '' }) +
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go (bare workflow or prebuild is required for native modules)\n';

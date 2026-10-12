@@ -13,7 +13,7 @@ import UPIPayment, {
 } from '../src/index';
 import { Platform } from 'react-native';
 
-describe('react-native-upi index module', () => {
+describe('@tahir810/react-native-upi index module', () => {
   beforeEach(() => {
     (Platform as any).OS = 'android';
     jest.clearAllMocks();

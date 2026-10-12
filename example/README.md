@@ -1,6 +1,6 @@
-# Example App for react-native-upi
+# Example App for @tahir810/react-native-upi
 
-This directory demonstrates how to use `react-native-upi` in a React Native application.
+This directory demonstrates how to use `@tahir810/react-native-upi` in a React Native application.
 
 ### Key features shown in `App.tsx`:
 1. Direct 5-argument method (`startPayment(...)`) matching the user prompt.

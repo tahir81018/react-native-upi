@@ -1,4 +1,4 @@
-# react-native-upi 💳
+# @tahir810/react-native-upi 💳
 
 > **A clean, complete, and zero-dependency React Native package for Android UPI payments using Native Intent (`startActivityForResult`).**
 > 
@@ -23,10 +23,10 @@
 
 ```bash
 # npm ব্যবহার করলে:
-npm install react-native-upi
+npm install @tahir810/react-native-upi
 
 # yarn ব্যবহার করলে:
-yarn add react-native-upi
+yarn add @tahir810/react-native-upi
 ```
 
 ---
@@ -41,14 +41,14 @@ React Native 0.60 বা তার পরবর্তী সংস্করণ�
 
 ১. `android/settings.gradle` ফাইলে যুক্ত করুন:
 ```groovy
-include ':react-native-upi'
-project(':react-native-upi').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-upi/android')
+include ':@tahir810_react-native-upi'
+project(':@tahir810_react-native-upi').projectDir = new File(rootProject.projectDir, '../node_modules/@tahir810/react-native-upi/android')
 ```
 
 ২. `android/app/build.gradle` ফাইলে dependencies-এ যুক্ত করুন:
 ```groovy
 dependencies {
-    implementation project(':react-native-upi')
+    implementation project(':@tahir810_react-native-upi')
 }
 ```
 
@@ -70,7 +70,7 @@ packages.add(new UPIPaymentPackage());
 ```typescript
 import React from 'react';
 import { View, Button, Alert, Platform } from 'react-native';
-import { startPayment } from 'react-native-upi';
+import { startPayment } from '@tahir810/react-native-upi';
 
 export default function PaymentScreen() {
   const makePayment = async () => {
@@ -112,7 +112,7 @@ export default function PaymentScreen() {
 স্ট্রাকচার্ড অবজেক্ট পাস করে Google Pay, PhonePe, Paytm বা সিস্টেম Chooser ব্যবহার করুন এবং পার্স করা রেসপন্স অবজেক্ট পান:
 
 ```typescript
-import { initiatePayment, isPaymentSuccessful, UPI_APPS } from 'react-native-upi';
+import { initiatePayment, isPaymentSuccessful, UPI_APPS } from '@tahir810/react-native-upi';
 
 const handlePayment = async () => {
   try {
@@ -150,7 +150,7 @@ const handlePayment = async () => {
 ```typescript
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { getInstalledUPIApps, initiatePayment, InstalledUPIApp } from 'react-native-upi';
+import { getInstalledUPIApps, initiatePayment, InstalledUPIApp } from '@tahir810/react-native-upi';
 
 export function UPIAppSelector() {
   const [apps, setApps] = useState<InstalledUPIApp[]>([]);
@@ -255,7 +255,7 @@ Helper function returning `true` if the payment status is `'SUCCESS'`.
 
 #### `UPI_APPS`
 ```typescript
-import { UPI_APPS } from 'react-native-upi';
+import { UPI_APPS } from '@tahir810/react-native-upi';
 
 UPI_APPS.GOOGLE_PAY   // 'com.google.android.apps.nbu.paisa.user'
 UPI_APPS.PHONEPE      // 'com.phonepe.app'
@@ -268,7 +268,7 @@ UPI_APPS.CHOOSER      // 'CHOOSER' (Opens native system chooser)
 
 #### `UPI_ERROR_CODES`
 ```typescript
-import { UPI_ERROR_CODES } from 'react-native-upi';
+import { UPI_ERROR_CODES } from '@tahir810/react-native-upi';
 
 UPI_ERROR_CODES.PAYMENT_CANCELLED        // 'PAYMENT_CANCELLED'
 UPI_ERROR_CODES.APP_NOT_INSTALLED        // 'APP_NOT_INSTALLED'
@@ -291,4 +291,4 @@ UPI_ERROR_CODES.INVALID_PARAMS           // 'INVALID_PARAMS'
 
 ## 📄 License
 
-MIT © [Tahir](https://github.com/tahir)
+MIT © [Tahir](https://github.com/tahir810)

@@ -19,7 +19,7 @@ import UPIPayment, {
   UPI_APPS,
   InstalledUPIApp,
   UPIPaymentResponse,
-} from 'react-native-upi';
+} from '@tahir810/react-native-upi';
 
 export default function App() {
   const [vpa, setVpa] = useState('merchant@okhdfcbank');
